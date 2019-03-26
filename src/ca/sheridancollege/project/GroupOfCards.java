@@ -53,5 +53,10 @@ public class GroupOfCards
     public void setSize(int givenSize) {
         size = givenSize;
     }
+
+	public void distributeCards() {
+		// TODO - implement GroupOfCards.distributeCards
+		throw new UnsupportedOperationException();
+	}
     
 }//end class

@@ -44,5 +44,10 @@ public abstract class Player
      * with your specific type of Player and filled in with logic to play your game.
      */
     public abstract void play();
+
+	public void VerifyUsername() {
+		// TODO - implement Player.VerifyUsername
+		throw new UnsupportedOperationException();
+	}
     
 }

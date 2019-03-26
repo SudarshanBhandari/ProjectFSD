@@ -59,6 +59,16 @@ public abstract class Game
      */
     public abstract void declareWinner();
 
+	public void quitGame() {
+		// TODO - implement Game.quitGame
+		throw new UnsupportedOperationException();
+	}
+
+	public void resetGame() {
+		// TODO - implement Game.resetGame
+		throw new UnsupportedOperationException();
+	}
+
    
     
 }//end class
