@@ -45,7 +45,7 @@ public abstract class Player
      */
     public abstract void play();
 
-	public void VerifyUsername() {
+	public boolean VerifyUsername() {
 		// TODO - implement Player.VerifyUsername
 		throw new UnsupportedOperationException();
 	}
