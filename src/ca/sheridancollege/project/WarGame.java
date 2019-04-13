@@ -37,6 +37,9 @@ public class WarGame extends Application {
     Text txt3=new Text();
     FlowPane textPanel= new FlowPane();
     FlowPane table= new FlowPane();
+     Button flip = new Button("Filp");
+      Button shuffle = new Button("Shuffle");
+      Button displayCard = new Button("Display Card");
     GroupOfCards cg=new GroupOfCards();
     
     
@@ -51,7 +54,7 @@ public class WarGame extends Application {
         root.setStyle("-fx-background-color: green");
         
        
-       
+       callTextMain("Good Luck");
         root.setCenter(table);
         table.setAlignment(Pos.CENTER);
         
@@ -67,18 +70,14 @@ public class WarGame extends Application {
         root.setTop(textPanel);
         textPanel.setAlignment(Pos.CENTER);
         
-        txt2.setText("Computer");
-        txt3.setText("Player");
         
-        Alert welcome= new Alert(AlertType.INFORMATION);
-        welcome.setTitle("Welcome");
-        welcome.setHeaderText(null);
-        welcome.setContentText("Welcome to War Game");
-        welcome.showAndWait();
+        alertBox("Welcome to War Game");
+       
         
-        callTextMain("Good Luck");
         
-        Button flip = new Button("Filp");
+        
+        
+       
         cg.initCards();
         cg.shuffle();
         cg.distributeCards();
@@ -89,12 +88,15 @@ public class WarGame extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-              flipPlayerCard();
-              flipComputerCard();
+              ClearTable();
+              flipCard();
+              CheckWinner() ;
+             // flipComputerCard();
+              //compareCard();
             }
         });
         
-        Button shuffle = new Button("Shuffle");
+      
         shuffle.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -103,7 +105,7 @@ public class WarGame extends Application {
             }
         });
         
-        Button displayCard = new Button("Display Card");
+        
         displayCard.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -155,7 +157,7 @@ public class WarGame extends Application {
        computerPanel.getChildren().addAll(ivB,txt2);
        ivB.setPreserveRatio(true);
        ivB.setFitWidth(100);
-       
+       textPanel.getChildren().add(txt);
        
         
     }
@@ -164,7 +166,7 @@ public class WarGame extends Application {
         txt.setText(message);
         txt.setFill(Color.BLUE);
         txt.setFont(Font.font(20));
-        textPanel.getChildren().add(txt);
+        
     }
     
 //public void first(){
@@ -179,18 +181,91 @@ public class WarGame extends Application {
 //       cg.distributeCards();
 //    }
 
-public void flipComputerCard() {
+public void flipCard() {
 	Card c = cg.computerPile.remove(0);
-	cg.tablePile.add(c);
+        Card d = cg.playerPile.remove(0);
+        cg.tablePile.add(d);
+	DisplayCard(d, table);
+        cg.tablePile.add(c);
         DisplayCard(c,table);
+        
+        
+        
+        if(c.Value==d.Value){
+            callTextMain("Its a war "+cg.tablePile.size());
+            callWar();
+           
+        }
+        else if(c.Value>d.Value){
+            
+            
+            for(int i=cg.tablePile.size()-1;i>=0; i--){
+                Card a=cg.tablePile.remove(i);
+                cg.computerPile.add(a);
+            }
+            callTextMain("Computer Win "+cg.tablePile.size());
+           
+        }
+        else{
+           
+            for(int i=cg.tablePile.size()-1;i>=0; i--){
+                Card a=cg.tablePile.remove(0);
+                cg.playerPile.add(a);
+            }
+             callTextMain("Player Win "+cg.tablePile.size());
+        }
+	txt2.setText("Computer Deck Size:"+cg.computerPile.size());
+        txt3.setText("Player Deck Size:"+cg.playerPile.size());
 	}
 
-public void flipPlayerCard() {
-		Card c = cg.playerPile.remove(0);
-		cg.playerPile.add(c);
-		DisplayCard(c, table);
+public void callWar() {
+    
+    
+     
+        Card c1 = cg.computerPile.remove(0);
+        Card c2 = cg.computerPile.remove(0);
+        Card c3 = cg.computerPile.remove(0);
+        
+        Card d1= cg.playerPile.remove(0);
+        Card d2 = cg.playerPile.remove(0);
+        Card d3 = cg.playerPile.remove(0);
+        
+        ClearTable();
+        cg.tablePile.add(d1);
+         cg.tablePile.add(d2);
+          cg.tablePile.add(d3);
+	DisplayCard(d3, table);
+        cg.tablePile.add(c1);
+          cg.tablePile.add(c2);
+            cg.tablePile.add(c3);
+        DisplayCard(c3,table);
 
+//        if(c3.Value==d3.Value){
+//            callTextMain("Its a war2 "+cg.tablePile.size());
+//            callWar();
+//           
+//        }
+         if(c3.Value>d3.Value){
+            
+            for(int i=cg.tablePile.size()-1;i>=0; i--){
+                Card a=cg.tablePile.remove(i);
+                cg.computerPile.add(a);
+            }
+           callTextMain("COmputer Win2 "+cg.tablePile.size());
+        }
+         else if (c3.Value<d3.Value){
+            
+            
+    for(int i=cg.tablePile.size()-1;i>=0; i--){
+                Card a=cg.tablePile.remove(i);
+                cg.playerPile.add(a);
+            }
+    callTextMain("Player Win2 "+cg.tablePile.size());
+        
 	}
+         txt2.setText("Computer"+cg.computerPile.size());
+        txt3.setText("Player"+cg.playerPile.size());
+}
 public void DisplayCard(Card c, FlowPane panel) {
      
 		Image img1 = new Image("images/"+c.GetFileName());
@@ -200,11 +275,52 @@ public void DisplayCard(Card c, FlowPane panel) {
 		iv1.setFitWidth(100);
 
 	}
+public void ClearTable(){
+    
+    table.getChildren().clear();
+
+}
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
+    
+   public void CheckWinner() 
+    {
+      if(cg.computerPile.isEmpty())
+      {    disableButtons();
+          alertBox("Player Wins");
+         
+      }
+      else
+          if(cg.playerPile.isEmpty())
+          {disableButtons();
+          alertBox("Computer Wins");
+          
+          }
+      
+   
+   }
+    public void alertBox(String str)
+    {
+    Alert alert= new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText(str);
+                    alert.showAndWait();
+    }
+    
+    
+    public void disableButtons(){
+     flip.setDisable(true);
+          displayCard.setDisable(true);
+          shuffle.setDisable(true);
+    
+    }
+    
+    
     
 }
