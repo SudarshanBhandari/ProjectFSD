@@ -4,7 +4,7 @@ public class CardOperations {
 
 	public void flipCard() {
 		// TODO - implement CardOperations.flipCard
-		throw new UnsupportedOperationException();
+		
 	}
 
 	public boolean compareCard() {

@@ -18,26 +18,55 @@ public class GroupOfCards
 {
    
     //The group of cards, stored in an ArrayList
-    private ArrayList <Card> cards;
+    ArrayList <Card> deck=new ArrayList <Card>();
+    ArrayList <Card> playerPile=new ArrayList <Card>();
+    ArrayList <Card> computerPile=new ArrayList <Card>();
+    ArrayList <Card> tablePile=new ArrayList <Card>();
+    
     private int size;//the size of the grouping
     
-    public GroupOfCards(int givenSize)
+    //public GroupOfCards(int givenSize)
+    public GroupOfCards()
     {
-        size = givenSize;
+       // size = givenSize;
     }
     
     /**
      * A method that will get the group of cards as an ArrayList
      * @return the group of cards.
      */
-    public ArrayList<Card> initCards()
-    {
-        return cards;
-    }
+//    public void initCards()
+//    {
+//        
+//        for (Card.Suit s: Card.Suit.values()){
+//            
+//            for (Card.Value v: Card.Value.values()){
+//                 
+//                Card c= new Card(s,v);
+//                
+//                deck.add(c);
+//                 
+//            }
+//        }
+//    }
+    
+    
+    public void initCards() {
+		String[] suits = new String[] { "hearts", "diamonds", "clubs", "spades" };
+		for (String s : suits) {
+			for (int i = 1; i < 14; i++) {
+				Card c = new Card(i, s);
+				deck.add(c);
+			}
+		}
+	}
     
     public void shuffle()
     {
-        Collections.shuffle(cards);
+        Collections.shuffle(deck);
+        Collections.shuffle(playerPile);
+        Collections.shuffle(computerPile);
+        
     }
 
     /**
@@ -55,8 +84,12 @@ public class GroupOfCards
     }
 
 	public void distributeCards() {
-		// TODO - implement GroupOfCards.distributeCards
-		throw new UnsupportedOperationException();
+           do{
+		Card c=deck.remove((int)Math.random()*(deck.size()-1));
+                playerPile.add(c);
+                c=deck.remove((int)Math.random()*(deck.size()-1));
+                computerPile.add(c);
+            }while(deck.size()>0);
 	}
     
 }//end class
